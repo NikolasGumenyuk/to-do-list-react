@@ -7,7 +7,7 @@ import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 
 function Task({ task, onToggle, deleteTask }) {
   const [checked, setChecked] = useState(task.done);
-  const [formatedDate, setFormatedDate] = useState(new Date(task.due_date));
+  const [formattedDate, setFormatedDate] = useState(new Date(task.due_date));
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -21,7 +21,7 @@ function Task({ task, onToggle, deleteTask }) {
   return (
     <li className={checked ? styles.done : styles.undone} key={task.task_id}>
       {task.due_date ? <CalendarTodayRoundedIcon /> : ""}
-      {task.due_date ? formatDate(formatedDate) : ""}
+      {task.due_date ? formatDate(formattedDate) : ""}
 
       <Checkbox
         checked={checked}

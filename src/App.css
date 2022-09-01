@@ -3,3 +3,9 @@
   flex-direction: column;
   align-items: center;
 }
+
+.addTaskButton {
+  position: fixed !important;
+  right: 0;
+  bottom: 0;
+}

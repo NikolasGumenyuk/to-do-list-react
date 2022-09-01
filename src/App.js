@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import "./App.css";
 import Task from "./components/Task";
 import TodoListSidebar from "./components/TodoListSidebar";
+import BasicModal from "./components/Modal";
+import AddForm from "./components/AddForm";
+import axios from "axios";
 
 const tasksArr = [
   {
@@ -31,7 +34,7 @@ const tasksArr = [
 ];
 
 function App() {
-  const [tasks, setTasks] = useState(tasksArr);
+  const [tasks, setTasks] = useState([]);
   const [taskList, setTaskList] = useState([
     {
       tasklist_id: 1,
@@ -43,6 +46,19 @@ function App() {
     },
   ]);
   let [selectedList, setSelectedList] = useState(tasks);
+
+  async function getUser() {
+    try {
+      const response = await axios.get("http://localhost:4000/task");
+      setTasks(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   function toggleTask(id) {
     setTasks(
@@ -63,6 +79,15 @@ function App() {
     setSelectedList(tasksArr.filter((task) => task.list_id === id));
     console.log(selectedList);
   }
+
+  const handleSubmit = (updatedItem) => {
+    const newTask = {
+      task_id: useId,
+      done: false,
+      list_id: 1,
+    };
+    setTasks((prev) => [...prev, { ...newTask, ...updatedItem }]);
+  };
 
   useEffect(() => {
     setSelectedList(tasks);
@@ -85,6 +110,11 @@ function App() {
           />
         ))}
       </ul>
+      <div className="addTaskButton">
+        <BasicModal>
+          <AddForm onSubmit={handleSubmit} />
+        </BasicModal>
+      </div>
     </div>
   );
 }
