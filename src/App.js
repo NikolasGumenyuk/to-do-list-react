@@ -6,48 +6,18 @@ import BasicModal from "./components/Modal";
 import AddForm from "./components/AddForm";
 import axios from "axios";
 
-const tasksArr = [
-  {
-    task_id: 1,
-    title: "Go to the gym",
-    description: "go go go",
-    done: false,
-    due_date: null,
-    list_id: 1,
-  },
-  {
-    task_id: 2,
-    title: "Go to the work",
-    description: "go go go",
-    done: false,
-    due_date: "2022-08-31T21:00:00.000Z",
-    list_id: 1,
-  },
-  {
-    task_id: 23,
-    title: "By something",
-    description: "by meat, by milk.",
-    done: false,
-    due_date: "2022-08-27T21:00:00.000Z",
-    list_id: 2,
-  },
-];
-
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [taskList, setTaskList] = useState([
-    {
-      tasklist_id: 1,
-      title: "study",
-    },
-    {
-      tasklist_id: 2,
-      title: "work",
-    },
-  ]);
-  let [selectedList, setSelectedList] = useState(tasks);
+  const [allTasks, setTasks] = useState([]);
+  const [taskList, setTaskList] = useState([]);
+  let [selectedList, setSelectedList] = useState(1);
+  const [showDone, setShowDone] = useState(false);
+  let tasks = allTasks.filter(task => task.list_id === selectedList)
+  if (!showDone) {
+    tasks = tasks.filter(task => !task.done)
+  }
 
-  async function getUser() {
+
+  async function getTasks() {
     try {
       const response = await axios.get("http://localhost:4000/task");
       setTasks(response.data);
@@ -56,15 +26,63 @@ function App() {
     }
   }
 
+  async function getTasksList() {
+    try {
+      const response = await axios.get("http://localhost:4000/tasklist");
+      setTaskList(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function deleteTask0nServer(id) {
+    try {
+      const response = await axios.delete(`http://localhost:4000/task/${id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function addTaskOnServer(task) {
+    await axios
+      .post("http://localhost:4000/task", task)
+      .then(function (response) {
+        setTasks((prev) => [...prev, response.data]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  async function updateTaskOnServer(id, data) {
+    await axios
+      .patch(`http://localhost:4000/task/${id}`, { done: data })
+      .then(function (response) {
+        setTasks(
+          allTasks.map((task) => {
+            if (task.task_id === response.data.task_id) {
+              task.done = !task.done;
+            }
+            return task;
+          })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
-    getUser();
+    getTasksList();
+    getTasks();
   }, []);
 
   function toggleTask(id) {
     setTasks(
-      tasks.map((task) => {
+      allTasks.map((task) => {
         if (task.task_id === id) {
           task.done = !task.done;
+          updateTaskOnServer(id, task.done);
         }
         return task;
       })
@@ -72,36 +90,31 @@ function App() {
   }
 
   function deleteTask(id) {
-    setTasks(tasks.filter((task) => task.task_id !== id));
+    setTasks(allTasks.filter((task) => task.task_id !== id));
+    deleteTask0nServer(id);
   }
 
   function selectTaskList(id) {
-    setSelectedList(tasksArr.filter((task) => task.list_id === id));
-    console.log(selectedList);
+    setSelectedList(allTasks.filter((task) => task.list_id === id));
   }
 
   const handleSubmit = (updatedItem) => {
-    const newTask = {
-      task_id: useId,
-      done: false,
-      list_id: 1,
-    };
-    setTasks((prev) => [...prev, { ...newTask, ...updatedItem }]);
+    addTaskOnServer({ ...updatedItem, ...{done: false} });
   };
 
   useEffect(() => {
-    setSelectedList(tasks);
-  }, [tasks]);
+    setSelectedList(allTasks);
+  }, [allTasks]);
 
   return (
     <div>
       <TodoListSidebar
         taskList={taskList}
-        onSelect={selectTaskList}
-        reset={() => setSelectedList(tasks)}
+        onSelect={setSelectedList}
+        onToggle={() => setShowDone(prev => !prev)}
       />
       <ul className="tasks">
-        {selectedList.map((task) => (
+        {tasks.map((task) => (
           <Task
             task={task}
             key={task.task_id}
@@ -112,7 +125,7 @@ function App() {
       </ul>
       <div className="addTaskButton">
         <BasicModal>
-          <AddForm onSubmit={handleSubmit} />
+          <AddForm onSubmit={handleSubmit} taskList={taskList} />
         </BasicModal>
       </div>
     </div>

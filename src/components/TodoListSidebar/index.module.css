@@ -7,8 +7,13 @@
   background-color: #ffffff;
   box-shadow: 2px 2px 2px #e6edf7;
   max-width: 252px;
-  min-width: 10vw;
+  min-width: 11vw;
   padding: 1vh;
+  display: flex;
+  flex-direction: column;
 }
 
-
+.switch {
+  position: fixed;
+  bottom: 3vh;
+}

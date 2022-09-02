@@ -2,6 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 
 const styles = {
   container: {
@@ -20,7 +24,7 @@ const styles = {
   },
 };
 
-const AddForm = ({ onSubmit }) => {
+const AddForm = ({ onSubmit, taskList }) => {
   const {
     register,
     handleSubmit,
@@ -35,8 +39,11 @@ const AddForm = ({ onSubmit }) => {
           id="outlined-basic"
           label="Title"
           variant="outlined"
-          {...register("title")}
+          {...register("title", {
+            required: { value: true, message: "Ніхуя немає" },
+          })}
         />
+        {errors?.title && <span>{errors.title.message}</span>}
         <TextField
           margin="normal"
           id="outlined-basic"
@@ -44,8 +51,33 @@ const AddForm = ({ onSubmit }) => {
           variant="outlined"
           {...register("description")}
         />
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">
+            List
+          </InputLabel>
+          <Select
+            defaultValue=""
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="List"
+            {...register("list_id")}
+          >
+            {taskList.map((list) => (
+              <MenuItem value={list.tasklist_id} key={list.tasklist_id}>
+                {list.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <input type="date" {...register("due_date")} />
-        <Button variant="contained" color="success" type="submit" margin="normal">
+
+        <Button
+          variant="contained"
+          color="success"
+          type="submit"
+          margin="normal"
+        >
           Submit
         </Button>
       </form>

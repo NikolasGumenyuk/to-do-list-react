@@ -14,22 +14,33 @@ function Task({ task, onToggle, deleteTask }) {
   };
 
   function formatDate(date) {
-    return `${date.getDate() < 10 ? "0" : ""}${date.getDate()}.${date.getMonth() < 10 ? "0" : ""}${date.getMonth()}.${date.getFullYear()}`;
+    return `${date.getDate() < 10 ? "0" : ""}${date.getDate()}.${
+      date.getMonth() < 10 ? "0" : ""
+    }${date.getMonth()}.${date.getFullYear()}`;
   }
 
+  function isWasted(date) {
+    const today = new Date();
+    if (date < today) {
+      return true;
+    }
+    return false;
+  }
 
   return (
     <li className={checked ? styles.done : styles.undone} key={task.task_id}>
-      {task.due_date ? <CalendarTodayRoundedIcon /> : ""}
-      {task.due_date ? formatDate(formattedDate) : ""}
-
+      <div className={isWasted(formattedDate) ? styles.red : ""}>
+        {task.due_date ? <CalendarTodayRoundedIcon /> : ""}
+        {task.due_date ? formatDate(formattedDate) : ""}
+      </div>
+      <div className={styles.info}>
       <Checkbox
         checked={checked}
         onClick={() => onToggle(task.task_id)}
         onChange={handleChange}
         inputProps={{ "aria-label": "controlled" }}
       />
-      <div>{task.title}</div>
+      <div><h4>{task.title}</h4>{task.description ? task.description : ''}</div>
       <IconButton
         aria-label="delete"
         color="error"
@@ -37,6 +48,7 @@ function Task({ task, onToggle, deleteTask }) {
       >
         <DeleteIcon />
       </IconButton>
+      </div>
     </li>
   );
 }
