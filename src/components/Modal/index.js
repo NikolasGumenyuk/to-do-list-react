@@ -18,10 +18,10 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({children}) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function BasicModal({children, handleOpen, handleClose, open}) {
+  // const [open, setOpen] = React.useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
   return (
     <div>

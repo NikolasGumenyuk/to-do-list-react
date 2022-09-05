@@ -7,20 +7,20 @@ import AddForm from "./components/AddForm";
 import axios from "axios";
 
 function App() {
-  const [allTasks, setTasks] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [allTasks, setAllTasks] = useState([]);
   const [taskList, setTaskList] = useState([]);
-  let [selectedList, setSelectedList] = useState(1);
+  const [selectedList, setSelectedList] = useState(9);
   const [showDone, setShowDone] = useState(false);
   let tasks = allTasks.filter(task => task.list_id === selectedList)
   if (!showDone) {
     tasks = tasks.filter(task => !task.done)
   }
 
-
   async function getTasks() {
     try {
       const response = await axios.get("http://localhost:4000/task");
-      setTasks(response.data);
+      setAllTasks(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -47,7 +47,7 @@ function App() {
     await axios
       .post("http://localhost:4000/task", task)
       .then(function (response) {
-        setTasks((prev) => [...prev, response.data]);
+        setAllTasks((prev) => [...prev, response.data]);
       })
       .catch(function (error) {
         console.log(error);
@@ -58,7 +58,7 @@ function App() {
     await axios
       .patch(`http://localhost:4000/task/${id}`, { done: data })
       .then(function (response) {
-        setTasks(
+        setAllTasks(
           allTasks.map((task) => {
             if (task.task_id === response.data.task_id) {
               task.done = !task.done;
@@ -78,7 +78,7 @@ function App() {
   }, []);
 
   function toggleTask(id) {
-    setTasks(
+    setAllTasks(
       allTasks.map((task) => {
         if (task.task_id === id) {
           task.done = !task.done;
@@ -90,21 +90,14 @@ function App() {
   }
 
   function deleteTask(id) {
-    setTasks(allTasks.filter((task) => task.task_id !== id));
+    setAllTasks(allTasks.filter((task) => task.task_id !== id));
     deleteTask0nServer(id);
-  }
-
-  function selectTaskList(id) {
-    setSelectedList(allTasks.filter((task) => task.list_id === id));
   }
 
   const handleSubmit = (updatedItem) => {
     addTaskOnServer({ ...updatedItem, ...{done: false} });
+    setOpen(false)
   };
-
-  useEffect(() => {
-    setSelectedList(allTasks);
-  }, [allTasks]);
 
   return (
     <div>
@@ -124,7 +117,7 @@ function App() {
         ))}
       </ul>
       <div className="addTaskButton">
-        <BasicModal>
+        <BasicModal handleOpen={()=> setOpen(true)} handleClose={()=> setOpen(false)} open={open}>
           <AddForm onSubmit={handleSubmit} taskList={taskList} />
         </BasicModal>
       </div>
