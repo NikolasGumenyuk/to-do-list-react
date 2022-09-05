@@ -22,6 +22,10 @@ const styles = {
     display: "flex",
     flexDirection: "column",
   },
+  date: {
+    marginTop: "10px",
+    marginBottom: "10px",
+  }
 };
 
 const AddForm = ({ onSubmit, taskList }) => {
@@ -36,7 +40,7 @@ const AddForm = ({ onSubmit, taskList }) => {
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         <TextField
           margin="normal"
-          id="outlined-basic"
+          id="outlined-basic"       
           label="Title"
           variant="outlined"
           {...register("title", {
@@ -70,7 +74,7 @@ const AddForm = ({ onSubmit, taskList }) => {
           </Select>
         </FormControl>
 
-        <input type="date" {...register("due_date")} />
+        <input type="date" style={styles.date} {...register("due_date")} />
 
         <Button
           variant="contained"

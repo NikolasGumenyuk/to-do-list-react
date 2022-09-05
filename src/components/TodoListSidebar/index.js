@@ -7,6 +7,9 @@ import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
+import { NavLink } from "react-router-dom";
 
 const TodoListSidebar = ({ taskList, onSelect, onToggle }) => {
   const [view, setView] = React.useState("list");
@@ -28,17 +31,27 @@ const TodoListSidebar = ({ taskList, onSelect, onToggle }) => {
           <ToggleButton
             value={list.title}
             key={list.tasklist_id}
-            onClick={() => onSelect(list.tasklist_id)}
+            // onClick={() => onSelect(list.tasklist_id)}
           >
-            {list.title}
+            <NavLink to={`/todo-list/${list.tasklist_id}`} className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
+              {list.title}
+            </NavLink>
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
+      <Button variant="outlined">
+        <NavLink to="/today" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
+          {"Today"}
+        </NavLink>
+      </Button>
       <div className={styles.switch}>
         <Typography>Visibility of done task:</Typography>
         <Stack direction="row" spacing={1} alignItems="center">
           <Typography>Off</Typography>
-          <Switch inputProps={{ "aria-label": "visibility" }} onChange={() => onToggle()}/>
+          <Switch
+            inputProps={{ "aria-label": "visibility" }}
+            onChange={() => onToggle()}
+          />
           <Typography>On</Typography>
         </Stack>
       </div>

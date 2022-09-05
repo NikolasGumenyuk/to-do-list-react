@@ -7,7 +7,7 @@
   background-color: #ffffff;
   box-shadow: 2px 2px 2px #e6edf7;
   max-width: 252px;
-  min-width: 14vw;
+  min-width: 12vw;
   padding: 1vh;
   display: flex;
   flex-direction: column;
@@ -16,4 +16,25 @@
 .switch {
   position: fixed;
   bottom: 3vh;
+}
+
+
+.inactive {
+  padding: 5px 0 5px 10px;
+}
+
+.inactive:hover {
+  color: #333;
+  border-radius: 10px;
+  background: rgb(207, 207, 207);
+}
+.active:hover {
+  color: #fff;
+}
+
+.active {
+  padding: 5px 0 5px 10px;
+  background: #6c757d;
+  color: #fff;
+  border-radius: 10px;
 }

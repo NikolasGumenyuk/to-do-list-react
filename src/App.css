@@ -9,3 +9,24 @@
   right: 0;
   bottom: 0;
 }
+
+
+.inactive {
+  padding: 5px 0 5px 10px;
+}
+
+.inactive:hover {
+  color: #333;
+  border-radius: 10px;
+  background: rgb(207, 207, 207);
+}
+.active:hover {
+  color: #fff;
+}
+
+.active {
+  padding: 5px 0 5px 10px;
+  background: #6c757d;
+  color: #fff;
+  border-radius: 10px;
+}
