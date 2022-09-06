@@ -1,8 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TodoListSidebar from "./components/TodoListSidebar";
-import TodayTasksPage from "./pages/TodayTasksPage";
-import TodoListPage from "./pages/TodoListPage";
+import TodayTasksPage from "./pages/TodayTasksPage/TodayTaskPage";
+import TodoListPage from "./pages/TodoListPage/TodoListPage";
 
 export default function AppRouter() {
   return (

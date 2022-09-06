@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import styles from "./index.module.css";
+import styles from "./Task.module.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Chip from "@mui/material/Chip";
+import { Link } from "react-router-dom";
 
 function Task({ task, onToggle, deleteTask, isChip }) {
   const [checked, setChecked] = useState(task.done);
@@ -48,7 +50,14 @@ function Task({ task, onToggle, deleteTask, isChip }) {
           <h4>{task.title}</h4>
           {task.description ? task.description : ""}
         </div>
+        {/* <IconButton
+          aria-label="delete"
+          color="primary"
+        >
+          <ModeEditIcon/>
+        </IconButton> */}
         <IconButton
+          className={styles.delete}
           aria-label="delete"
           color="error"
           onClick={() => deleteTask(task.task_id)}
@@ -62,8 +71,7 @@ function Task({ task, onToggle, deleteTask, isChip }) {
             key={task.tasklist.tasklist_id}
             label={task.tasklist.title}
             color="primary"
-            component="a"
-            href={`http://localhost:3000/todo-list/${task.tasklist.tasklist_id}`}
+            component={React.forwardRef((props, ref) => <Link ref={ref} to={`/todo-list/${task.tasklist.tasklist_id}`} {...props} />)}
             clickable
           />
         </div>

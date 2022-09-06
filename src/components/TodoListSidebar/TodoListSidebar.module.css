@@ -13,10 +13,6 @@
   flex-direction: column;
 }
 
-.switch {
-  position: fixed;
-  bottom: 3vh;
-}
 
 
 .inactive {

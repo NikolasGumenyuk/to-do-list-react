@@ -25,7 +25,7 @@ const styles = {
   date: {
     marginTop: "10px",
     marginBottom: "10px",
-  }
+  },
 };
 
 const AddForm = ({ onSubmit, taskList }) => {
@@ -35,12 +35,13 @@ const AddForm = ({ onSubmit, taskList }) => {
     formState: { errors },
   } = useForm();
 
+
   return (
     <div style={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         <TextField
           margin="normal"
-          id="outlined-basic"       
+          id="outlined-basic"
           label="Title"
           variant="outlined"
           {...register("title", {
@@ -56,15 +57,15 @@ const AddForm = ({ onSubmit, taskList }) => {
           {...register("description")}
         />
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">
-            List
-          </InputLabel>
+          <InputLabel id="demo-simple-select-label">List</InputLabel>
           <Select
             defaultValue=""
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label="List"
-            {...register("list_id")}
+            {...register("list_id", {
+              required: { value: true, message: "Select list please" },
+            })}
           >
             {taskList.map((list) => (
               <MenuItem value={list.tasklist_id} key={list.tasklist_id}>
@@ -72,6 +73,7 @@ const AddForm = ({ onSubmit, taskList }) => {
               </MenuItem>
             ))}
           </Select>
+          {errors?.list_id && <span>{errors.list_id.message}</span>}
         </FormControl>
 
         <input type="date" style={styles.date} {...register("due_date")} />
