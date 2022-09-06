@@ -14,7 +14,6 @@ function Task({ task, onToggle, deleteTask, isChip }) {
     setChecked(event.target.checked);
   };
 
-
   function formatDate(date) {
     return `${date.getDate() < 10 ? "0" : ""}${date.getDate()}.${
       date.getMonth() < 10 ? "0" : ""
@@ -24,11 +23,10 @@ function Task({ task, onToggle, deleteTask, isChip }) {
   function isWasted(date) {
     const today = new Date();
 
-    if  (date.getDate() === today.getDate()) {
+    if (date.getDate() === today.getDate()) {
       return false;
-    } else if(date < today) {
-    return true;
-
+    } else if (date < today) {
+      return true;
     }
     return false;
   }
@@ -61,11 +59,11 @@ function Task({ task, onToggle, deleteTask, isChip }) {
       {isChip ? (
         <div className={styles.chip}>
           <Chip
-          key={task.tasklist.tasklist_id}
+            key={task.tasklist.tasklist_id}
             label={task.tasklist.title}
             color="primary"
             component="a"
-            href={`http://localhost:3001/todo-list/${task.tasklist.tasklist_id}`}
+            href={`http://localhost:3000/todo-list/${task.tasklist.tasklist_id}`}
             clickable
           />
         </div>

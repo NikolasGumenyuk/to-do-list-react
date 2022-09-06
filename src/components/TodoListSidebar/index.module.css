@@ -21,6 +21,7 @@
 
 .inactive {
   padding: 5px 0 5px 10px;
+  margin: 1vh;
 }
 
 .inactive:hover {
@@ -37,4 +38,5 @@
   background: #6c757d;
   color: #fff;
   border-radius: 10px;
+  margin: 1vh;
 }
