@@ -49,3 +49,12 @@ export async function getTodayTasks() {
     console.error(error);
   }
 }
+
+export async function getDashboard() {
+  try {
+    let response = await axios.get("http://localhost:4000/task/dashboard")
+    return response.data;
+  } catch(error) {
+    console.log(error);
+  }
+}

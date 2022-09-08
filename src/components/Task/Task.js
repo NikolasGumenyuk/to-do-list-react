@@ -42,7 +42,7 @@ function Task({ task, onToggle, deleteTask, isChip }) {
       <div className={styles.info}>
         <Checkbox
           checked={checked}
-          onClick={() => onToggle(task.task_id)}
+          onClick={() => onToggle(task)}
           onChange={handleChange}
           inputProps={{ "aria-label": "controlled" }}
         />

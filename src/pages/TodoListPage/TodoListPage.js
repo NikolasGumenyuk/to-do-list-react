@@ -14,57 +14,45 @@ import {
 import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { useDispatch, useSelector } from "react-redux";
 
+ 
 const TodoListPage = () => {
   let { id } = useParams();
+  const dispatch = useDispatch();
+  const tasksR = useSelector((state) => state.tasks.tasks);
+
   const [open, setOpen] = useState(false);
-  const [allTasks, setAllTasks] = useState([]);
   const [taskList, setTaskList] = useState([]);
   const [selectedList, setSelectedList] = useState(id);
   const [showDone, setShowDone] = useState(false);
-  let tasks = allTasks.filter((task) => task.list_id === +selectedList);
+  let tasks = tasksR.filter((task) => task.list_id === +selectedList);
   if (!showDone) {
     tasks = tasks.filter((task) => !task.done);
   }
 
   useEffect(() => {
     getAllTasksList().then(setTaskList);
-    getAllTasks().then((response) => setAllTasks(response.data));
+    getAllTasks().then((response) => dispatch({type: "LOAD_TASKS", payload: response.data}));
   }, []);
 
   useEffect(() => {
     setSelectedList(id);
   }, [id]);
 
-  function toggleTask(id) {
-    setAllTasks(
-      allTasks.map((task) => {
-        if (task.task_id === id) {
-          task.done = !task.done;
-          updateTaskOnServer(id, task.done).then(function (response) {
-            setAllTasks(
-              allTasks.map((task) => {
-                if (task.task_id === response.data.task_id) {
-                  task.done = !task.done;
-                }
-                return task;
-              })
-            );
-          });
-        }
-        return task;
-      })
-    );
+  function toggleTask(task) {
+    dispatch({type:"UPDATE_TASK", payload: task})
+    updateTaskOnServer(task.task_id, task.done)
   }
 
   function deleteTask(id) {
-    setAllTasks(allTasks.filter((task) => task.task_id !== id));
+    dispatch({type: "DELETE_TASK", payload: id})
     deleteTask0nServer(id);
   }
 
   const handleSubmit = (updatedItem) => {
     addTaskOnServer({ ...updatedItem, ...{ done: false } }).then((response) =>
-      setAllTasks((prev) => [...prev, response.data])
+    dispatch({type: "ADD_TASKS", payload: response.data})
     );
     setOpen(false);
   };
