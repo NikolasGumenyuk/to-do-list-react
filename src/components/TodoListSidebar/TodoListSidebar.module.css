@@ -1,18 +1,23 @@
-.tasks {
+.sidebar {
+  height: 100%;
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  box-shadow: 2px 2px 2px #e6edf7;
+  max-width: 252px;
+  min-width: 12vw;
+  padding: 1vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-.addTaskButton {
-  position: fixed !important;
-  right: 0;
-  bottom: 0;
-}
 
 
 .inactive {
   padding: 5px 0 5px 10px;
+  margin: 1vh;
 }
 
 .inactive:hover {
@@ -29,4 +34,5 @@
   background: #6c757d;
   color: #fff;
   border-radius: 10px;
+  margin: 1vh;
 }

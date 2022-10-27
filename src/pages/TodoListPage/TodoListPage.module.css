@@ -1,0 +1,19 @@
+.tasks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .addTaskButton {
+    position: fixed !important;
+    right: 0;
+    bottom: 0;
+  }
+
+  .switch {
+    position: absolute !important;
+    /* bottom: 3vh; */
+    /* z-index: 1; */
+    right: 0;
+  }
+  
