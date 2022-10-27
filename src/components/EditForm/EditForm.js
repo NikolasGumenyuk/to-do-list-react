@@ -35,7 +35,6 @@ const EditForm = ({ onSubmit, taskList, task }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  console.log(task);
 
   return (
     <div style={styles.container}>

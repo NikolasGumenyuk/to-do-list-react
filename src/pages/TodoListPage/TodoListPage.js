@@ -66,12 +66,10 @@ const TodoListPage = () => {
   };
 
   const handleEdit = (updatedItem) => {
-    console.log(updatedItem);
     const updatedTask = {
       ...updatedItem,
       ...{ done: taskToEdit.done, task_id: +taskToEdit.task_id },
     };
-    console.log(updatedTask);
     updateTaskOnServer(updatedTask.task_id, updatedTask).then(() =>
       getAllTasks().then((response) =>
         dispatch({ type: "LOAD_TASKS", payload: response.data })
