@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -18,11 +17,12 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({children, handleOpen, handleClose, open}) {
-  // const [open, setOpen] = React.useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-
+export default function BasicModal({
+  children,
+  handleOpen,
+  handleClose,
+  open,
+}) {
   return (
     <div>
       <IconButton aria-label="addTask" onClick={handleOpen}>
@@ -35,10 +35,7 @@ export default function BasicModal({children, handleOpen, handleClose, open}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add new task
-          </Typography>
-            {children}
+          {children}
         </Box>
       </Modal>
     </div>

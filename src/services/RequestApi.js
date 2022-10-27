@@ -10,9 +10,9 @@ export async function getAllTasks() {
 
 export async function getAllTasksList() {
   try {
-     let response = await axios.get("http://localhost:4000/tasklist");
-     return response.data
-    } catch (error) {
+    let response = await axios.get("http://localhost:4000/tasklist");
+    return response.data;
+  } catch (error) {
     console.error(error);
   }
 }
@@ -35,7 +35,7 @@ export async function addTaskOnServer(task) {
 
 export async function updateTaskOnServer(id, data) {
   return await axios
-    .patch(`http://localhost:4000/task/${id}`, { done: data })
+    .patch(`http://localhost:4000/task/${id}`, data)
     .catch(function (error) {
       console.log(error);
     });
@@ -43,7 +43,9 @@ export async function updateTaskOnServer(id, data) {
 
 export async function getTodayTasks() {
   try {
-    let response = await axios.get("http://localhost:4000/task/collection/today");
+    let response = await axios.get(
+      "http://localhost:4000/task/collection/today"
+    );
     return response.data;
   } catch (error) {
     console.error(error);
@@ -52,9 +54,9 @@ export async function getTodayTasks() {
 
 export async function getDashboard() {
   try {
-    let response = await axios.get("http://localhost:4000/task/dashboard")
+    let response = await axios.get("http://localhost:4000/task/dashboard");
     return response.data;
-  } catch(error) {
+  } catch (error) {
     console.log(error);
   }
 }

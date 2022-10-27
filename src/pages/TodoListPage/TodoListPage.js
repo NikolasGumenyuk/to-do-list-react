@@ -15,8 +15,8 @@ import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
+import EditForm from "../../components/EditForm/EditForm";
 
- 
 const TodoListPage = () => {
   let { id } = useParams();
   const dispatch = useDispatch();
@@ -26,6 +26,7 @@ const TodoListPage = () => {
   const [taskList, setTaskList] = useState([]);
   const [selectedList, setSelectedList] = useState(id);
   const [showDone, setShowDone] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState(null);
   let tasks = tasksR.filter((task) => task.list_id === +selectedList);
   if (!showDone) {
     tasks = tasks.filter((task) => !task.done);
@@ -33,7 +34,9 @@ const TodoListPage = () => {
 
   useEffect(() => {
     getAllTasksList().then(setTaskList);
-    getAllTasks().then((response) => dispatch({type: "LOAD_TASKS", payload: response.data}));
+    getAllTasks().then((response) =>
+      dispatch({ type: "LOAD_TASKS", payload: response.data })
+    );
   }, []);
 
   useEffect(() => {
@@ -41,18 +44,38 @@ const TodoListPage = () => {
   }, [id]);
 
   function toggleTask(task) {
-    dispatch({type:"UPDATE_TASK", payload: task})
-    updateTaskOnServer(task.task_id, task.done)
+    dispatch({ type: "UPDATE_TASK", payload: task });
+    updateTaskOnServer(task.task_id, { ...task, ...{ done: !task.done } });
   }
 
   function deleteTask(id) {
-    dispatch({type: "DELETE_TASK", payload: id})
+    dispatch({ type: "DELETE_TASK", payload: id });
     deleteTask0nServer(id);
+  }
+
+  function editTask(id) {
+    setTaskToEdit(tasks.find((task) => task.task_id === id));
+    setOpen(true);
   }
 
   const handleSubmit = (updatedItem) => {
     addTaskOnServer({ ...updatedItem, ...{ done: false } }).then((response) =>
-    dispatch({type: "ADD_TASKS", payload: response.data})
+      dispatch({ type: "ADD_TASKS", payload: response.data })
+    );
+    setOpen(false);
+  };
+
+  const handleEdit = (updatedItem) => {
+    console.log(updatedItem);
+    const updatedTask = {
+      ...updatedItem,
+      ...{ done: taskToEdit.done, task_id: +taskToEdit.task_id },
+    };
+    console.log(updatedTask);
+    updateTaskOnServer(updatedTask.task_id, updatedTask).then(() =>
+      getAllTasks().then((response) =>
+        dispatch({ type: "LOAD_TASKS", payload: response.data })
+      )
     );
     setOpen(false);
   };
@@ -77,6 +100,7 @@ const TodoListPage = () => {
             key={task.task_id}
             onToggle={toggleTask}
             deleteTask={deleteTask}
+            editTask={editTask}
             isChip={false}
           />
         ))}
@@ -87,7 +111,15 @@ const TodoListPage = () => {
           handleClose={() => setOpen(false)}
           open={open}
         >
-          <AddForm onSubmit={handleSubmit} taskList={taskList} />
+          {taskToEdit ? (
+            <EditForm
+              onSubmit={handleEdit}
+              taskList={taskList}
+              task={taskToEdit}
+            />
+          ) : (
+            <AddForm onSubmit={handleSubmit} taskList={taskList} />
+          )}
         </BasicModal>
       </div>
     </div>

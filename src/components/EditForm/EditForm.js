@@ -29,40 +29,51 @@ const styles = {
   },
 };
 
-const AddForm = ({ onSubmit, taskList }) => {
+const EditForm = ({ onSubmit, taskList, task }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  console.log(task);
 
   return (
     <div style={styles.container}>
+
       <Typography id="modal-modal-title" variant="h6" component="h2">
-        Add new task
+        Edit task
       </Typography>
+
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         <TextField
           margin="normal"
           id="outlined-basic"
           label="Title"
+          defaultValue={task.title}
           variant="outlined"
           {...register("title", {
             required: { value: true, message: "Ніхуя немає" },
           })}
         />
         {errors?.title && <span>{errors.title.message}</span>}
-        <TextField
-          margin="normal"
-          id="outlined-basic"
-          label="Description"
-          variant="outlined"
-          {...register("description")}
-        />
+
+        {task.description ? (
+          <TextField
+            margin="normal"
+            id="outlined-basic"
+            label="Description"
+            defaultValue={task.description}
+            variant="outlined"
+            {...register("description")}
+          />
+        ) : (
+          ""
+        )}
+
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">List</InputLabel>
           <Select
-            defaultValue=""
+            defaultValue={task.list_id}
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label="List"
@@ -79,7 +90,12 @@ const AddForm = ({ onSubmit, taskList }) => {
           {errors?.list_id && <span>{errors.list_id.message}</span>}
         </FormControl>
 
-        <input type="date" style={styles.date} {...register("due_date")} />
+        <input
+          type="date"
+          value={task.due_date.slice(0, 10)}
+          style={styles.date}
+          {...register("due_date")}
+        />
 
         <Button
           variant="contained"
@@ -94,4 +110,4 @@ const AddForm = ({ onSubmit, taskList }) => {
   );
 };
 
-export default AddForm;
+export default EditForm;
