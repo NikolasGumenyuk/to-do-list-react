@@ -18,7 +18,6 @@ function App() {
     getAllTasksList().then(setTaskList);
   }, []);
 
-      СІФАІАІА
   return (
     <div>
       <TodoListSidebar taskList={taskList} dashboard={dashboard} />

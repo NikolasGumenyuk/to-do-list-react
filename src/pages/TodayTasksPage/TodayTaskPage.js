@@ -4,6 +4,7 @@ import {
   getTodayTasks,
   deleteTask0nServer,
   updateTaskOnServer,
+  getTemperatureToday,
 } from "../../services/RequestApi";
 
 const TodayTasksPage = () => {

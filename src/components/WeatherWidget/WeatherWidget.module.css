@@ -1,0 +1,6 @@
+.card {
+  bottom: 3vh;
+  position: absolute !important;
+  width: 90%;
+  height: 15%;
+}

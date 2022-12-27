@@ -60,3 +60,12 @@ export async function getDashboard() {
     console.log(error);
   }
 }
+
+export async function getTemperatureToday() {
+  try {
+    let response = await axios.get("https://api.open-meteo.com/v1/forecast?latitude=49.44&longitude=32.06&hourly=temperature_2m&current_weather=true");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}

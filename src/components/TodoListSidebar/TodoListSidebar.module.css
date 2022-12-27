@@ -6,14 +6,13 @@
   left: 0;
   background-color: #ffffff;
   box-shadow: 2px 2px 2px #e6edf7;
-  max-width: 252px;
-  min-width: 12vw;
+  max-width: 20%;
+  min-width: 15%;
   padding: 1vh;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
 }
-
-
 
 .inactive {
   padding: 5px 0 5px 10px;
@@ -25,6 +24,7 @@
   border-radius: 10px;
   background: rgb(207, 207, 207);
 }
+
 .active:hover {
   color: #fff;
 }
